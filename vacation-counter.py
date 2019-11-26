@@ -36,12 +36,19 @@ for m_off in sorted(m, key=lambda e: e.begin):
             elif m_off.end.hour <= 12:
                 working_days -= 0.5
 
-    print('{} - [{} - {}] ({} working day{}{})'
-          .format(m_off.name, m_off.begin, m_off.end, working_days,
-                  's' if working_days != 1 else '',
-                  '' if hours >= 8 else ' - {} hours'.format(hours)))
     cross = [x for x in c.events
              if x.name.lower().find(overlap_filter) > -1
              and x.begin <= m_off.end and x.end >= m_off.begin]
+
+    report = '{} - [{} - {}] ({} working day{}{})'\
+        .format(m_off.name, m_off.begin, m_off.end, working_days,
+                's' if working_days != 1 else '',
+                '' if hours >= 8 else ' - {} hours'.format(hours))
     if cross:
-        print('OVERLAP: {}\n'.format(cross))
+        print()
+        print('*** found holiday overlap (check manually) ***********************')
+        print(report)
+        print('overlapping with: {}'.format(cross))
+        print('******************************************************************\n')
+    else:
+        print(report)
